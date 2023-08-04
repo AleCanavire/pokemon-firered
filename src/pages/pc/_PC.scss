@@ -1,0 +1,111 @@
+.pc-wrapper{
+   width: 100%;
+   height: 100%;
+   overflow: hidden;
+   .pc-background{
+      width: 100%;
+      height: 100%;
+      background-image: url("/images/background-pc.jpg");
+      background-size: 100% 200%;
+      animation: backgroundAnimate 4s linear infinite;
+   }
+   .pkmn-data-wrapper{
+      position: absolute;
+      top: 0.6%;
+      bottom: 0.6%;
+      left: 0;
+      width: 33.4%;
+      background-image: url("/images/pokemon-data.png");
+      background-size: 100.2vw 100%;
+      animation: dataAnimate .4s steps(1) infinite;
+   }
+   .all-boxes-wrapper{
+      position: absolute;
+      top: 10.2%;
+      left: 33.4%;
+      bottom: 0.6%;
+      width: 66.6%;
+      padding: 0 0.8vw;
+      overflow: hidden;
+      .all-boxes{
+         width: 100%;
+         height: 100%;
+         display: flex;
+         gap: 0 10vw;
+         transform: translateX(0);
+         .box-wrapper{
+            width: 100%;
+            height: 100%;
+            background-image: url("/images/box-1.png");
+            background-size: 100% 100%;
+            .pokemons-in-box-wrapper{
+               position: absolute;
+               top: 14.2%;
+               left: 3.8%;
+               right: 3.8%;
+               bottom: 2.2%;
+               display: grid;
+               grid-template-columns: repeat(6, calc(100% / 6));
+               grid-template-rows: repeat(5, calc(100% / 5 - 0.42vw));
+               justify-items: center;
+               gap: 0.55vw 0;
+               .pokemon-in-box{
+                  width: 100%;
+                  height: 100%;
+                  display: flex;
+                  justify-content: center;
+                  img{
+                     height: 100%;
+                  }
+               }
+            }
+            .arrows-wrapper{
+               position: absolute;
+               top: 0;
+               left: 0;
+               right: 0;
+               height: 15.6%;
+               padding: 0 4%;
+               display: flex;
+               justify-content: space-between;
+               align-items: center;
+               .arrow{
+                  width: 5.5%;
+                  height: 55%;
+               }
+            }
+         }
+      }
+   }
+   .hand-selector{
+      position: absolute;
+      display: flex;
+      align-items: end;
+      transition: all .1s linear;
+      img{
+         width: 100%;
+         height: 200%;
+      }
+   }
+}
+
+@keyframes backgroundAnimate {
+   0%{
+      background-position-y: 100%;
+   }
+   100%{
+      background-position-y: 0%;
+   }
+}
+
+@keyframes dataAnimate { 
+   0%{
+      background-position-x: 0%;
+   }
+   33%{
+      background-position-x: 50%;
+   }
+   66%{
+      background-position-x: 100%;
+   }
+}

@@ -1,0 +1,18 @@
+*,
+*::before,
+*::after{
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+}
+
+img{
+   image-rendering: pixelated;
+}
+
+.pokemon-firered-wrapper{
+   width: 100%;
+   height: 100vh;
+}
+
+@import "/src/pages/pc/PC"
