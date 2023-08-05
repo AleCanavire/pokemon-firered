@@ -1,17 +1,6 @@
 import { useEffect, useState } from 'react'
-
-interface DataResponse {
-  count: number;
-  next: string;
-  previous: null | string;
-  results: PokemonTemplate[];
-}
-
-interface PokemonTemplate {
-  name: string
-  url:  string
-  id: number
-}
+import { useGetAllPokemons, useGetOnePokemon } from '../../hooks/useFetch';
+import { PokemonTemplate } from '../../types';
 
 interface CordsTemplate {
   width?: string
@@ -20,27 +9,19 @@ interface CordsTemplate {
   left?: string
 }
 
-
 function PC() {
-  const [pokemons, setPokemons] = useState<PokemonTemplate[]>([]);
-  const [selected, setSelected] = useState<number>(1);
+  const [selected, setSelected] = useState<PokemonTemplate>({
+    name: "bulbasaur",
+    url: "https://pokeapi.co/api/v2/pokemon/1/",
+    id: 1
+  });
   const [cords, setCords] = useState<CordsTemplate>({});
+  const { pokemons } = useGetAllPokemons();
+  const { pokemon } = useGetOnePokemon(selected);
 
-  useEffect(() => {
-    const getPokemons = async() => {
-      const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
-      const data = await response.json() as DataResponse;
-      const allPokemons = data.results.map((pokemon, index) => ({
-          ...pokemon,
-          id: index + 1
-      }));
-      setPokemons(allPokemons)
-    }
-    getPokemons();
-  }, [])
 
   useEffect(()=>{
-    const pokemonSelected = document.querySelector(`[data-image="${selected}"]`);
+    const pokemonSelected = document.querySelector(`[data-image="${selected.id}"]`);
     const cordsSelected = pokemonSelected?.getBoundingClientRect();
     setCords({
       width: `${cordsSelected?.width}px`,
@@ -49,22 +30,25 @@ function PC() {
       left: `${cordsSelected?.left}px`
     })
 
-    const changeSelected = (e: any) => {
-      if (e.key === "ArrowUp" || e.key === "w"){
-        setSelected(prevSelected => prevSelected - 6);
-      } else if (e.key === "ArrowLeft" || e.key === "a"){
-        setSelected(prevSelected => prevSelected - 1);
-      } else if (e.key === "ArrowRight" || e.key === "s"){
-        setSelected(prevSelected => prevSelected + 1);
-      } else if (e.key === "ArrowDown" || e.key === "d"){
-        setSelected(prevSelected => prevSelected + 6);
+    const changeSelected = (e: KeyboardEvent) => {
+      if ((e.key === "ArrowUp" || e.key === "w") && selected.id > 6){
+        const nextSelection = pokemons.find(pokemon => pokemon.id === selected.id - 6);
+        nextSelection && setSelected(nextSelection);
+      } else if ((e.key === "ArrowLeft" || e.key === "a") && selected.id > 1){
+        const nextSelection = pokemons.find(pokemon => pokemon.id === selected.id - 1);
+        nextSelection && setSelected(nextSelection);
+      } else if ((e.key === "ArrowDown" || e.key === "s") && selected.id < 24){
+        const nextSelection = pokemons.find(pokemon => pokemon.id === selected.id + 6);
+        nextSelection && setSelected(nextSelection);
+      } else if ((e.key === "ArrowRight" || e.key === "d") && selected.id < 30){
+        const nextSelection = pokemons.find(pokemon => pokemon.id === selected.id + 1);
+        nextSelection && setSelected(nextSelection);
       } 
     }
-    document.addEventListener("keydown", changeSelected)
+
+    document.addEventListener("keydown", changeSelected);
     return () => document.removeEventListener("keydown", changeSelected);
-  }, [selected])
-
-
+  }, [pokemons, selected])
 
   return (
     <div className="pc-wrapper">
