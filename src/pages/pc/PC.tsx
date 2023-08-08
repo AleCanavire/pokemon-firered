@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useGetAllPokemons, useGetOnePokemon } from '../../hooks/useFetch';
 import { PokemonTemplate } from '../../types';
+import { useNavigate } from 'react-router-dom';
 
 interface CordsTemplate {
   width?: string
@@ -18,8 +19,8 @@ function PC() {
   const [cords, setCords] = useState<CordsTemplate>({});
   const [imageLoaded, setImageLoaded] = useState<Boolean>(false);
   const { pokemons } = useGetAllPokemons();
-  const { pokemon } = useGetOnePokemon(selected);
-
+  const { pokemon } = useGetOnePokemon(selected.name);
+  const navigate = useNavigate();
 
   useEffect(()=>{
     const pokemonSelected = document.querySelector(`[data-image="${selected.id}"]`);
@@ -44,7 +45,9 @@ function PC() {
       } else if ((e.key === "ArrowRight" || e.key === "d") && selected.id < 30){
         const nextSelection = pokemons.find(pokemon => pokemon.id === selected.id + 1);
         nextSelection && setSelected(nextSelection);
-      } 
+      } else if (e.key === "Enter"){
+        navigate(`/datos/${selected.name}`);
+      }
     }
 
     document.addEventListener("keydown", changeSelected);
@@ -68,10 +71,12 @@ function PC() {
           />
         </div>
         <div className="pokemon-data">
-          <h2 className="pokemon-name">
-            {`${pokemon?.name?.charAt(0).toUpperCase()}${pokemon?.name.slice(1)}`}<br/>
-            /{`${pokemon?.name?.charAt(0).toUpperCase()}${pokemon?.name.slice(1)}`}
-          </h2>
+          { pokemon &&
+            <h2 className="pokemon-name">
+              {`${pokemon.name?.charAt(0).toUpperCase()}${pokemon?.name.slice(1)}`}<br/>
+              /{`${pokemon.name?.charAt(0).toUpperCase()}${pokemon?.name.slice(1)}`}
+            </h2>
+          }
         </div>
       </div>
       <div className="all-boxes-wrapper">
