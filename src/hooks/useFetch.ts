@@ -29,8 +29,6 @@ export function useGetOnePokemon(selection: PokemonTemplate) {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${selection.name}`);
       const data = await response.json();
       setPokemon(data);
-
-      console.log(data);
     }
 
     fetchData();

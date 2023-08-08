@@ -4,6 +4,7 @@
    margin: 0;
    padding: 0;
    box-sizing: border-box;
+   font-family: "Pokemon-Firered";
 }
 
 img{
@@ -16,4 +17,9 @@ img{
    height: 100vh;
 }
 
-@import "/src/pages/pc/PC"
+@font-face {
+   font-family: "Pokemon-Firered";
+   src: url("/src/assets/fonts/pokemon-firered-font.ttf");
+}
+
+@import "/src/pages/pc/PC";

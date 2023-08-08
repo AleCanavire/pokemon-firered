@@ -16,6 +16,7 @@ function PC() {
     id: 1
   });
   const [cords, setCords] = useState<CordsTemplate>({});
+  const [imageLoaded, setImageLoaded] = useState<Boolean>(false);
   const { pokemons } = useGetAllPokemons();
   const { pokemon } = useGetOnePokemon(selected);
 
@@ -37,7 +38,7 @@ function PC() {
       } else if ((e.key === "ArrowLeft" || e.key === "a") && selected.id > 1){
         const nextSelection = pokemons.find(pokemon => pokemon.id === selected.id - 1);
         nextSelection && setSelected(nextSelection);
-      } else if ((e.key === "ArrowDown" || e.key === "s") && selected.id < 24){
+      } else if ((e.key === "ArrowDown" || e.key === "s") && selected.id < 25){
         const nextSelection = pokemons.find(pokemon => pokemon.id === selected.id + 6);
         nextSelection && setSelected(nextSelection);
       } else if ((e.key === "ArrowRight" || e.key === "d") && selected.id < 30){
@@ -50,11 +51,28 @@ function PC() {
     return () => document.removeEventListener("keydown", changeSelected);
   }, [pokemons, selected])
 
+  useEffect(() => {
+    setImageLoaded(false);
+  }, [pokemon])
+
   return (
     <div className="pc-wrapper">
       <div className="pc-background"/>
-      <div className="pkmn-data-wrapper">
-
+      <div className="info-pkmn-wrapper">
+        <div className="pokemon-sprite">
+          <img
+            src={pokemon?.sprites.versions?.['generation-iii']['firered-leafgreen'].front_default}
+            alt={pokemon?.name}
+            style={imageLoaded ? {} : {display: "none"}}
+            onLoad={() => setImageLoaded(true)}
+          />
+        </div>
+        <div className="pokemon-data">
+          <h2 className="pokemon-name">
+            {`${pokemon?.name?.charAt(0).toUpperCase()}${pokemon?.name.slice(1)}`}<br/>
+            /{`${pokemon?.name?.charAt(0).toUpperCase()}${pokemon?.name.slice(1)}`}
+          </h2>
+        </div>
       </div>
       <div className="all-boxes-wrapper">
         <div className="all-boxes">
