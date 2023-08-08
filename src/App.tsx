@@ -1,6 +1,6 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import PC from "./pages/pc/PC"
-import PokeDetail from "./pages/datos/PokeDetail"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import PC from "./pages/pc/PC";
+import PokeDatos from "./pages/datos/PokeDatos";
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
       <main className="pokemon-firered-wrapper">
         <Routes>
           <Route path="/" element={<PC/>}/>
-          <Route path="/datos/:name" element={<PokeDetail/>}/>
+          <Route path="/datos/:nombre" element={<PokeDatos/>}/>
         </Routes>
       </main>
     </Router>

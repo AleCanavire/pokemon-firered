@@ -12,21 +12,27 @@ export function useGetAllPokemons() {
           ...pokemon,
           id: index + 1
       }));
-      setPokemons(allPokemons)
+      setPokemons(allPokemons);
+      sessionStorage.setItem("pokemons", JSON.stringify(allPokemons));
     }
 
-    fetchData();
+    const pokemonStorage = sessionStorage.getItem("pokemons");
+    if (pokemonStorage) {
+      setPokemons(JSON.parse(pokemonStorage));
+    } else{
+      fetchData();
+    }
   }, [])
 
   return { pokemons }
 }
 
-export function useGetOnePokemon(selection: PokemonTemplate) {
+export function useGetOnePokemon(selection: string | undefined) {
   const [pokemon, setPokemon] = useState<SinglePokemon | null>(null);
 
   useEffect(() => {
     const fetchData = async() => {
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${selection.name}`);
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${selection}`);
       const data = await response.json();
       setPokemon(data);
     }
