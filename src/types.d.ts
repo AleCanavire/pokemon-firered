@@ -1,3 +1,13 @@
+// SoundtrackContext
+export interface ISoundtrackContext {
+  playSoundtrack: () => void;
+}
+
+export interface ISoundtrackProvider {
+  children: ReactNode;
+};
+
+// PokeApi
 export interface DataResponse {
   count: number;
   next: string;
@@ -9,6 +19,13 @@ export interface PokemonTemplate {
   name: string
   url:  string
   id: number
+}
+
+export interface CordsTemplate {
+  width?: string
+  height?: string
+  top?: string
+  left?: string
 }
 
 // Single Pokemon Response
