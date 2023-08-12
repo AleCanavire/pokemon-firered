@@ -59,13 +59,15 @@
       .all-boxes{
          width: 100%;
          height: 100%;
-         display: flex;
-         gap: 0 10vw;
+         white-space: nowrap;
          transform: translateX(0);
+         transition: .6s transform linear;
          .box-wrapper{
+            position: relative;
+            display: inline-block;
             width: 100%;
             height: 100%;
-            background-image: url("/images/box-1.png");
+            margin-right: 10vw;
             background-size: 100% 100%;
             .pokemons-in-box-wrapper{
                position: absolute;
@@ -103,7 +105,37 @@
                   height: 55%;
                }
             }
+            .box-name{
+               position: absolute;
+               top: 0;
+               left: 10.2%;
+               right: 10.2%;
+               bottom: 84.4%;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               h1{
+                  color: #fff;
+                  font-size: 6.5vh;
+                  font-weight: 300;
+                  line-height: 1.2;
+                  letter-spacing: -0.6vh;
+                  text-shadow:   0.6vh 0px 0px #000,
+                                 0 0.6vh 0px #000,
+                                 0.6vh 0.6vh 0px #000;
+                  transform: scaleX(1.15);
+                  display: flex;
+                  align-items: flex-end;
+               }
+            }
          }
+      }
+      .box-template{
+         position: absolute;
+         top: 0;
+         left: 11.2%;
+         right: 11.2%;
+         bottom: 84.4%;
       }
    }
    .hand-selector{
@@ -114,6 +146,7 @@
       img{
          width: 100%;
          height: 200%;
+         object-fit: contain;
       }
    }
 }

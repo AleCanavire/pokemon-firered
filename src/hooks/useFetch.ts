@@ -37,7 +37,9 @@ export function useGetOnePokemon(selection: string | undefined) {
       setPokemon(data);
     }
 
-    fetchData();
+    if (selection){
+      fetchData();
+    }
   }, [selection])
 
   return { pokemon }

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useGetAllPokemons, useGetOnePokemon } from '../../hooks/useFetch';
 import { CordsTemplate, PokemonTemplate } from '../../types';
 import { useNavigate } from 'react-router-dom';
@@ -10,14 +10,16 @@ function PC() {
     url: "https://pokeapi.co/api/v2/pokemon/1/",
     id: 1
   });
+  const [boxActive, setBoxActive] = useState<number>(1);
   const [cords, setCords] = useState<CordsTemplate>({});
   const [imageLoaded, setImageLoaded] = useState<Boolean>(false);
   const [transition, setTransition] = useState<Boolean>(true);
   const { pokemons } = useGetAllPokemons();
   const { pokemon } = useGetOnePokemon(selected.name);
+  const soundtrack = useContext(SoundtrackContext);
+
   const navigate = useNavigate();
 
-  const soundtrack = useContext(SoundtrackContext);
   const selectAudio = new Audio("/media/selector-sound.mp3");
 
   useEffect(() => {
@@ -33,7 +35,7 @@ function PC() {
       height: `${cordsSelected?.height}px`,
       top: `${cordsSelected?.top}px`,
       left: `${cordsSelected?.left}px`
-    })
+    });
 
     const findSelection = (operation: string, number: number) => {
       if (operation === "prev") {
@@ -47,13 +49,29 @@ function PC() {
     } 
 
     const changeSelected = (e: KeyboardEvent) => {
-      if ((e.key === "ArrowUp" || e.key === "w") && selected.id > 6){
+      if ((e.key === "ArrowUp" || e.key === "w") && ( selected.id > 30 * (boxActive - 1) && selected.id <= 6 + (30 * (boxActive - 1)) )){
+        setSelected({
+          name: "",
+          url: "",
+          id: 0
+        })
+      } else if ((e.key === "ArrowLeft" || e.key === "a") && selected.id === 0){
+        boxActive > 1 && setBoxActive(prev => prev - 1);
+      } else if ((e.key === "ArrowDown" || e.key === "s") && selected.id === 0){
+        setSelected({
+          name: pokemons[30 * (boxActive - 1)].name,
+          url: pokemons[30 * (boxActive - 1)].url,
+          id: pokemons[30 * (boxActive - 1)].id
+        })
+      } else if ((e.key === "ArrowRight" || e.key === "d") && selected.id === 0){
+        boxActive < 6 && setBoxActive(prev => prev + 1);
+      } else if ((e.key === "ArrowUp" || e.key === "w") && ( selected.id > 6 + (30 * (boxActive - 1)) && selected.id <= 30 + 30 * (boxActive - 1) )){
         findSelection("prev", 6);
-      } else if ((e.key === "ArrowLeft" || e.key === "a") && selected.id > 1){
+      } else if ((e.key === "ArrowLeft" || e.key === "a") && ( selected.id > 1 + (30 * (boxActive - 1)) && selected.id <= 30 + 30 * (boxActive - 1) )){
         findSelection("prev", 1);
-      } else if ((e.key === "ArrowDown" || e.key === "s") && selected.id < 25){
+      } else if ((e.key === "ArrowDown" || e.key === "s") && ( selected.id > 0 + (30 * (boxActive - 1)) && selected.id < 25 + 30 * (boxActive - 1) )){
         findSelection("next", 6);
-      } else if ((e.key === "ArrowRight" || e.key === "d") && selected.id < 30){
+      } else if ((e.key === "ArrowRight" || e.key === "d") && ( selected.id > 0 + (30 * (boxActive - 1)) && selected.id < 30 + 30 * (boxActive - 1) )){
         findSelection("next", 1);
       } else if (e.key === "Enter"){
         setTransition(true);
@@ -66,7 +84,7 @@ function PC() {
 
     document.addEventListener("keydown", changeSelected);
     return () => document.removeEventListener("keydown", changeSelected);
-  }, [pokemons, selected])
+  }, [pokemons, selected, boxActive])
 
   useEffect(() => {
     setImageLoaded(false);
@@ -78,46 +96,58 @@ function PC() {
         <div className="pc-background"/>
         <div className="info-pkmn-wrapper">
           <div className="pokemon-sprite">
-            <img
-              src={pokemon?.sprites.versions?.['generation-iii']['firered-leafgreen'].front_default}
-              alt={pokemon?.name}
-              style={imageLoaded ? {} : {display: "none"}}
-              onLoad={() => setImageLoaded(true)}
-            />
+            { selected.name &&
+              <img
+                src={pokemon?.sprites.versions?.['generation-iii']['firered-leafgreen'].front_default}
+                alt={pokemon?.name}
+                style={imageLoaded ? {} : {display: "none"}}
+                onLoad={() => setImageLoaded(true)}
+              />
+            }
           </div>
           <div className="pokemon-data">
-            { pokemon &&
+            { selected.name &&
               <h2 className="pokemon-name">
-                {`${pokemon.name?.charAt(0).toUpperCase()}${pokemon?.name.slice(1)}`}<br/>
-                /{`${pokemon.name?.charAt(0).toUpperCase()}${pokemon?.name.slice(1)}`}
+                {`${selected.name?.charAt(0).toUpperCase()}${selected?.name.slice(1)}`}<br/>
+                /{`${selected.name?.charAt(0).toUpperCase()}${selected?.name.slice(1)}`}
               </h2>
             }
           </div>
         </div>
         <div className="all-boxes-wrapper">
-          <div className="all-boxes">
-            <div className="box-wrapper box-1">
-              <div className="pokemons-in-box-wrapper">
-                { pokemons.length > 0
-                  ? pokemons.slice(0, 30).map(pokemon => {
-                    return(
-                      <div className="pokemon-in-box" data-image={pokemon.id} key={pokemon.name}>
-                        <img src={`/images/pokemons/Pokemon_N°${pokemon.id}.png`}/>
-                      </div>
-                    )})
-                  : <div className="pokemon-in-box" data-image="1"/>
-                }
-              </div>
-              <div className="arrows-wrapper">
-                <img className="arrow-left arrow" src="/images/arrow-left.png" />
-                <img className="arrow-right arrow" src="/images/arrow-right.png" />
-              </div>
-            </div>
+          <div className="all-boxes" style={{transform: `translateX(calc(-${100 * (boxActive - 1)}% - ${10 * (boxActive - 1)}vw))`}}>
+            {[1,2,3,4,5,6].map((boxNumber, index) => {
+              return(
+                <div className={`box-wrapper box-${boxNumber}`} style={{backgroundImage: `url(/images/box-${boxNumber}.png)`}} key={boxNumber}>
+                  <div className="pokemons-in-box-wrapper">
+                    { pokemons.length > 0 &&
+                        pokemons.slice(30 * index, 30 * boxNumber).map(pokemon => {
+                          return(
+                            <div className="pokemon-in-box" data-image={pokemon.id} key={pokemon.name}>
+                              <img src={`/images/pokemons/Pokemon_N°${pokemon.id}.png`}/>
+                            </div>
+                          )
+                        })
+                    }
+                  </div>
+                  <div className="arrows-wrapper">
+                    <img className="arrow-left arrow" src="/images/arrow-left.png" />
+                    <img className="arrow-right arrow" src="/images/arrow-right.png" />
+                  </div>
+                  <div className="box-name">
+                    <h1>{`CAJA ${boxNumber}`}</h1>
+                  </div>
+                </div>
+              )})
+            }
           </div>
+          <div className="box-template" data-image="0"/>
         </div>
-        <div style={cords} className="hand-selector">
-          <img src="/images/selector.png" alt="Hand selector"/>
-        </div>
+        { pokemons &&
+          <div style={cords} className="hand-selector">
+            <img src="/images/selector.png" alt="Hand selector"/>
+          </div>
+        }
       </div>
       <div className="transition-shadow" style={transition ? {background: "rgb(0 0 0 / 100%)"} : {}}/>
     </>
