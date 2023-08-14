@@ -38,6 +38,7 @@
          object-fit: contain;
          transform: rotateY(180deg) scaleX(1.15);
          animation: pokemonAnimate .8s ease-out;
+         display: none;
       }
    }
    .pokemon-data-wrapper{

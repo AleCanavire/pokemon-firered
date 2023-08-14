@@ -104,7 +104,7 @@ function PC() {
               <img
                 src={pokemon?.sprites.versions?.['generation-iii']['firered-leafgreen'].front_default}
                 alt={pokemon?.name}
-                style={imageLoaded ? {} : {display: "none"}}
+                style={imageLoaded ? {display: "block"} : {}}
                 onLoad={() => setImageLoaded(true)}
               />
             }
