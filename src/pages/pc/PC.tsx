@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
-import { useGetAllPokemons, useGetOnePokemon } from '../../hooks/useFetch';
-import { CordsTemplate, PokemonTemplate } from '../../types';
 import { useNavigate } from 'react-router-dom';
+import { CordsTemplate, PokemonTemplate } from '../../types';
+import { useGetAllPokemons, useGetOnePokemon } from '../../hooks/useFetch';
 import { SoundtrackContext } from '../../context/SoundtrackContext';
 
 function PC() {
@@ -55,16 +55,20 @@ function PC() {
           url: "",
           id: 0
         })
+        selectAudio.play();
       } else if ((e.key === "ArrowLeft" || e.key === "a") && selected.id === 0){
         boxActive > 1 && setBoxActive(prev => prev - 1);
+        selectAudio.play();
       } else if ((e.key === "ArrowDown" || e.key === "s") && selected.id === 0){
         setSelected({
           name: pokemons[30 * (boxActive - 1)].name,
           url: pokemons[30 * (boxActive - 1)].url,
           id: pokemons[30 * (boxActive - 1)].id
         })
+        selectAudio.play();
       } else if ((e.key === "ArrowRight" || e.key === "d") && selected.id === 0){
         boxActive < 6 && setBoxActive(prev => prev + 1);
+        selectAudio.play();
       } else if ((e.key === "ArrowUp" || e.key === "w") && ( selected.id > 6 + (30 * (boxActive - 1)) && selected.id <= 30 + 30 * (boxActive - 1) )){
         findSelection("prev", 6);
       } else if ((e.key === "ArrowLeft" || e.key === "a") && ( selected.id > 1 + (30 * (boxActive - 1)) && selected.id <= 30 + 30 * (boxActive - 1) )){
