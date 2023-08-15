@@ -61,7 +61,7 @@ function PokeDatos() {
           <img
             src={pokemon?.sprites.versions?.['generation-iii']['firered-leafgreen'].front_default}
             alt={pokemon?.name}
-            style={imageLoaded ? {display: "block"} : {}}
+            style={imageLoaded ? {display: "block"} : {display: "none"}}
             onLoad={() => setImageLoaded(true)}
           />
         </div>
@@ -76,7 +76,7 @@ function PokeDatos() {
             { pokemon?.types.map(type => {
               return(
                 <img
-                  src={`/images/tipos/${type.type.name}.png`}
+                  src={`/images/tipos/${type.type.name}.webp`}
                   alt={type.type.name}
                   key={type.type.name}
                 />

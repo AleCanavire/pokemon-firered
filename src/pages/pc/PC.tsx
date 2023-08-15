@@ -104,7 +104,7 @@ function PC() {
               <img
                 src={pokemon?.sprites.versions?.['generation-iii']['firered-leafgreen'].front_default}
                 alt={pokemon?.name}
-                style={imageLoaded ? {display: "block"} : {}}
+                style={imageLoaded ? {display: "block"} : {display: "none"}}
                 onLoad={() => setImageLoaded(true)}
               />
             }
@@ -122,21 +122,21 @@ function PC() {
           <div className="all-boxes" style={{transform: `translateX(calc(-${100 * (boxActive - 1)}% - ${10 * (boxActive - 1)}vw))`}}>
             {[1,2,3,4,5,6].map((boxNumber, index) => {
               return(
-                <div className={`box-wrapper box-${boxNumber}`} style={{backgroundImage: `url(/images/box-${boxNumber}.png)`}} key={boxNumber}>
+                <div className={`box-wrapper box-${boxNumber}`} style={{backgroundImage: `url(/images/box-${boxNumber}.webp)`}} key={boxNumber}>
                   <div className="pokemons-in-box-wrapper">
                     { pokemons.length > 0 &&
                         pokemons.slice(30 * index, 30 * boxNumber).map(pokemon => {
                           return(
                             <div className="pokemon-in-box" data-image={pokemon.id} key={pokemon.name}>
-                              <img src={`/images/pokemons/Pokemon_N°${pokemon.id}.png`}/>
+                              <img src={`/images/pokemons/Pokemon_N°${pokemon.id}.webp`} alt={pokemon.name}/>
                             </div>
                           )
                         })
                     }
                   </div>
                   <div className="arrows-wrapper">
-                    <img className="arrow-left arrow" src="/images/arrow-left.png" />
-                    <img className="arrow-right arrow" src="/images/arrow-right.png" />
+                    <img className="arrow-left arrow" src="/images/arrow-left.webp" />
+                    <img className="arrow-right arrow" src="/images/arrow-right.webp" />
                   </div>
                   <div className="box-name">
                     <h1>{`CAJA ${boxNumber}`}</h1>
@@ -149,7 +149,7 @@ function PC() {
         </div>
         { pokemons &&
           <div style={cords} className="hand-selector">
-            <img src="/images/selector.png" alt="Hand selector"/>
+            <img src="/images/selector.webp" alt="Hand selector"/>
           </div>
         }
       </div>

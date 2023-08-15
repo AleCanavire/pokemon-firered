@@ -5,7 +5,7 @@
    .pc-background{
       width: 100%;
       height: 100%;
-      background-image: url("/images/background-pc.jpg");
+      background-image: url("/images/background-pc.webp");
       background-size: 100% 200%;
       animation: backgroundAnimate 4s linear infinite;
    }
@@ -15,7 +15,7 @@
       bottom: 0.6%;
       left: 0;
       width: 33.4%;
-      background-image: url("/images/pokemon-data.png");
+      background-image: url("/images/pokemon-data.webp");
       background-size: 100.2vw 100%;
       animation: dataAnimate .4s steps(1) infinite;
       .pokemon-sprite{
@@ -28,7 +28,6 @@
             width: 100%;
             height: 100%;
             animation: blurEffect .2s forwards;
-            display: none;
          }
       }
       .pokemon-data{
