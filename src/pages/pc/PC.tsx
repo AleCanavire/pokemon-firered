@@ -104,7 +104,7 @@ function PC() {
           <div className="pokemon-sprite">
             { selected.name &&
               <img
-                src={pokemon?.sprites.versions?.['generation-iii']['firered-leafgreen'].front_default}
+                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/${selected.id}.png`}
                 alt={pokemon?.name}
                 style={imageLoaded ? {display: "block"} : {display: "none"}}
                 onLoad={() => setImageLoaded(true)}
