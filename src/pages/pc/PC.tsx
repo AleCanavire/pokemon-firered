@@ -45,6 +45,7 @@ function PC() {
         const nextSelection = pokemons.find(pokemon => pokemon.id === selected.id + number);
         nextSelection && setSelected(nextSelection);
       }
+      setImageLoaded(false);
       selectAudio.play();
     } 
 
@@ -55,9 +56,11 @@ function PC() {
           url: "",
           id: 0
         })
+        setImageLoaded(false);
         selectAudio.play();
       } else if ((e.key === "ArrowLeft" || e.key === "a") && selected.id === 0){
         boxActive > 1 && setBoxActive(prev => prev - 1);
+        setImageLoaded(false);
         selectAudio.play();
       } else if ((e.key === "ArrowDown" || e.key === "s") && selected.id === 0){
         setSelected({
@@ -66,9 +69,11 @@ function PC() {
           id: pokemons[30 * (boxActive - 1)].id
         })
         selectAudio.play();
+        setImageLoaded(false);
       } else if ((e.key === "ArrowRight" || e.key === "d") && selected.id === 0){
         boxActive < 6 && setBoxActive(prev => prev + 1);
         selectAudio.play();
+        setImageLoaded(false);
       } else if ((e.key === "ArrowUp" || e.key === "w") && ( selected.id > 6 + (30 * (boxActive - 1)) && selected.id <= 30 + 30 * (boxActive - 1) )){
         findSelection("prev", 6);
       } else if ((e.key === "ArrowLeft" || e.key === "a") && ( selected.id > 1 + (30 * (boxActive - 1)) && selected.id <= 30 + 30 * (boxActive - 1) )){
@@ -79,6 +84,7 @@ function PC() {
         findSelection("next", 1);
       } else if (e.key === "Enter"){
         setTransition(true);
+        setImageLoaded(false);
         selectAudio.play();
         setTimeout(() => {
           navigate(`/datos/${selected.name}`);
@@ -89,10 +95,6 @@ function PC() {
     document.addEventListener("keydown", changeSelected);
     return () => document.removeEventListener("keydown", changeSelected);
   }, [pokemons, selected, boxActive])
-
-  useEffect(() => {
-    setImageLoaded(false);
-  }, [pokemon])
 
   return (
     <>
