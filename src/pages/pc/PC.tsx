@@ -16,14 +16,13 @@ function PC() {
   const [transition, setTransition] = useState<Boolean>(true);
   const { pokemons } = useGetAllPokemons();
   const { pokemon } = useGetOnePokemon(selected.name);
-  const soundtrack = useContext(SoundtrackContext);
+  const { controlSoundtrack, isPaused } = useContext(SoundtrackContext);
 
   const navigate = useNavigate();
 
   const selectAudio = new Audio("/media/selector-sound.mp3");
 
   useEffect(() => {
-    soundtrack?.playSoundtrack();
     setTransition(false);
   }, [])
 
@@ -154,8 +153,13 @@ function PC() {
             <img src="/images/selector.webp" alt="Hand selector"/>
           </div>
         }
+        <div
+          className="sound-control"
+          style={isPaused ? {backgroundPositionX: "100%"} : {backgroundPositionX: "0%"}}
+          onClick={controlSoundtrack}
+        />
       </div>
-      <div className="transition-shadow" style={transition ? {background: "rgb(0 0 0 / 100%)"} : {}}/>
+      <div className="transition-shadow" style={transition ? {opacity: "1", visibility: "visible"} : {}}/>
     </>
   )
 }

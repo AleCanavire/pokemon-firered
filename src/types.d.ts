@@ -1,6 +1,7 @@
 // SoundtrackContext
 export interface ISoundtrackContext {
-  playSoundtrack: () => void;
+  controlSoundtrack: () => void;
+  isPaused: boolean;
 }
 
 export interface ISoundtrackProvider {

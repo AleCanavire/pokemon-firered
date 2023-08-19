@@ -149,6 +149,17 @@
          object-fit: contain;
       }
    }
+   .sound-control{
+      position: absolute;
+      top: 0.6%;
+      left: 91.5%;
+      right: 0.8%;
+      bottom: 90.5%;
+      background: url("/images/sound-button.webp");
+      background-size: 200% 100%;
+      image-rendering: pixelated;
+      cursor: pointer;
+   }
 }
 
 .transition-shadow{
@@ -157,8 +168,10 @@
    left: 0;
    right: 0;
    bottom: 0;
-   background: rgb(0 0 0 / 0%);
-   transition: .4s background ease;
+   background: #000;
+   opacity: 0;
+   visibility: hidden;
+   transition: .4s opacity ease, .4s visibility ease;
 }
 
 @keyframes blurEffect {

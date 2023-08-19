@@ -1,20 +1,25 @@
-import { createContext, useRef } from 'react';
+import { createContext, useRef, useState } from 'react';
 import { ISoundtrackContext, ISoundtrackProvider } from '../types';
 
-export const SoundtrackContext = createContext<ISoundtrackContext | null>(null);
+export const SoundtrackContext = createContext<ISoundtrackContext>({} as ISoundtrackContext);
 
 function SoundtrackContextProvider({ children }: ISoundtrackProvider) {
   const soundtrack = useRef(new Audio("/media/soundtrack.mp3"));
+  const [isPaused, setIsPaused] = useState(true);
 
-  const playSoundtrack = () => {
+  const controlSoundtrack = () => {
+    soundtrack.current.loop = true;
     if (soundtrack.current.paused) {
       soundtrack.current.play();
-      soundtrack.current.loop = true;
+      setIsPaused(false)
+    } else {
+      soundtrack.current.pause();
+      setIsPaused(true)
     }
   }
 
   return (
-    <SoundtrackContext.Provider value={{ playSoundtrack }}>
+    <SoundtrackContext.Provider value={{ controlSoundtrack, isPaused }}>
       { children }
     </SoundtrackContext.Provider>
   )

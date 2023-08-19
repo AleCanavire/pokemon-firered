@@ -103,7 +103,7 @@ function PokeDatos() {
           }
         </div>
       </div>
-      <div className="transition-shadow" style={transition ? {background: "rgb(0 0 0 / 100%)"} : {}}/>
+      <div className="transition-shadow" style={transition ? {opacity: "1", visibility: "visible"} : {}}/>
     </>
   )
 }
