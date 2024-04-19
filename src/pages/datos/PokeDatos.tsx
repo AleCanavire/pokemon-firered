@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useGetOnePokemon } from '../../hooks/useFetch';
 
 function PokeDatos() {
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState<Boolean>(false);
   const [nID, setNID] = useState<number>();
   const [transition, setTransition] = useState<Boolean>(true);
   const { nombre } = useParams();

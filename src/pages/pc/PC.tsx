@@ -14,6 +14,7 @@ function PC() {
   const [cords, setCords] = useState<CordsTemplate>({});
   const [imageLoaded, setImageLoaded] = useState<Boolean>(false);
   const [transition, setTransition] = useState<Boolean>(true);
+  const [isInMove, setIsInMove] = useState<Boolean>(false)
   const { pokemons } = useGetAllPokemons();
   const { pokemon } = useGetOnePokemon(selected.name);
   const { controlSoundtrack, isPaused } = useContext(SoundtrackContext);
@@ -60,19 +61,21 @@ function PC() {
       } else if ((e.key === "ArrowLeft" || e.key === "a") && selected.id === 0){
         boxActive > 1 && setBoxActive(prev => prev - 1);
         setImageLoaded(false);
+        setIsInMove(true);
         selectAudio.play();
-      } else if ((e.key === "ArrowDown" || e.key === "s") && selected.id === 0){
+      } else if ((e.key === "ArrowDown" || e.key === "s") && selected.id === 0 && !isInMove){
         setSelected({
           name: pokemons[30 * (boxActive - 1)].name,
           url: pokemons[30 * (boxActive - 1)].url,
           id: pokemons[30 * (boxActive - 1)].id
         })
-        selectAudio.play();
         setImageLoaded(false);
+        selectAudio.play();
       } else if ((e.key === "ArrowRight" || e.key === "d") && selected.id === 0){
         boxActive < 6 && setBoxActive(prev => prev + 1);
-        selectAudio.play();
         setImageLoaded(false);
+        setIsInMove(true);
+        selectAudio.play();
       } else if ((e.key === "ArrowUp" || e.key === "w") && ( selected.id > 6 + (30 * (boxActive - 1)) && selected.id <= 30 + 30 * (boxActive - 1) )){
         findSelection("prev", 6);
       } else if ((e.key === "ArrowLeft" || e.key === "a") && ( selected.id > 1 + (30 * (boxActive - 1)) && selected.id <= 30 + 30 * (boxActive - 1) )){
@@ -93,7 +96,7 @@ function PC() {
 
     document.addEventListener("keydown", changeSelected);
     return () => document.removeEventListener("keydown", changeSelected);
-  }, [pokemons, selected, boxActive])
+  }, [pokemons, selected, boxActive, isInMove])
 
   return (
     <>
@@ -120,7 +123,7 @@ function PC() {
           </div>
         </div>
         <div className="all-boxes-wrapper">
-          <div className="all-boxes" style={{transform: `translateX(calc(-${100 * (boxActive - 1)}% - ${10 * (boxActive - 1)}vw))`}}>
+          <div className="all-boxes" style={{transform: `translateX(calc(-${100 * (boxActive - 1)}% - ${10 * (boxActive - 1)}vw))`}} onTransitionEnd={()=>setIsInMove(false)}>
             {[1,2,3,4,5,6].map((boxNumber, index) => {
               return(
                 <div className={`box-wrapper box-${boxNumber}`} style={{backgroundImage: `url(/images/box-${boxNumber}.webp)`}} key={boxNumber}>
